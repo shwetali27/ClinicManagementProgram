@@ -1,0 +1,87 @@
+{
+  "Doctors": [
+    {
+      "Name": "Dr. Joshi",
+      "DoctID": 101,
+      "Specialization": "Heart",
+      "ClinicId": [
+        "10001",
+        "10002"
+      ]
+    },
+    {
+      "Name": "Dr. Patel",
+      "DoctID": 102,
+      "Specialization": "Eyes",
+      "ClinicId": [
+        "10001"
+      ]
+    },
+    {
+      "Name": "Dr. Naved",
+      "DoctID": 103,
+      "Specialization": "Brain",
+      "ClinicId": [
+        "10003",
+        "10004",
+        "10005"
+      ]
+    },
+    {
+      "Name": "Dr. Desai",
+      "DoctID": 104,
+      "Specialization": "General",
+      "ClinicId": [
+        "10001",
+        "10005"
+      ]
+    },
+    {
+      "Name": "Dr. Jeet",
+      "DoctID": 105,
+      "Specialization": "Skin",
+      "ClinicId": [
+        "10002"
+      ]
+    }
+  ],
+  "Patients": [
+    {
+      "MobileNo": "8912457421",
+      "Age": 26,
+      "Name": "Ms. Nitu"
+    },
+    {
+      "MobileNo": "8745149657",
+      "Age": 35,
+      "Name": "Mr. Dev"
+    },
+    {
+      "MobileNo": "7869124801",
+      "Age": 38,
+      "Name": "Mrs. Khanna"
+    }
+  ],
+  "Clinic": [
+    {
+      "Name": "KEM Hospital",
+      "ClinicId": "10001"
+    },
+    {
+      "Name": "TATA Hospital",
+      "ClinicId": "10002"
+    },
+    {
+      "Name": "Lilavati Hospital",
+      "ClinicId": "10003"
+    },
+    {
+      "Name": "Muktabai Hospital",
+      "ClinicId": "10004"
+    },
+    {
+      "Name": "Jaslok Hospital",
+      "ClinicId": "10005"
+    }
+  ]
+}
