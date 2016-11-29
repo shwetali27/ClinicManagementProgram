@@ -6,7 +6,7 @@ public class PatientModel {
 
 	private String patientName;
 	private String patientNumber;
-	private String patientId;
+	private int patientId;
 	private int patientAge;
 	private ArrayList<Integer> clinicIdList;
 	
@@ -23,10 +23,10 @@ public class PatientModel {
 	public void setPatientNumber(String patientNumber) {
 		this.patientNumber = patientNumber;
 	}
-	public String getPatientId() {
+	public int getPatientId() {
 		return patientId;
 	}
-	public void setPatientId(String patientId) {
+	public void setPatientId(int patientId) {
 		this.patientId = patientId;
 	}
 	public int getPatientAge() {

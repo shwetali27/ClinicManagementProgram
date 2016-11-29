@@ -4,29 +4,28 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.bridgelabz.dao.DatabaseDao;
+import com.bridgelabz.dao.DatabaseDaoImpl;
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
 
-public class JsonDataReader<T> {
-
+public class JsonDataReader {
+	//creating the object for class
+	DatabaseDao databaseDao = new DatabaseDaoImpl();
 	JSONParser parser = new JSONParser();
-	private ArrayList<DoctorModel> doctorList = new ArrayList<DoctorModel>();
-	private ArrayList<PatientModel> patientList = new ArrayList<PatientModel>();
-	private ArrayList<ClinicModel> clinicList = new ArrayList<ClinicModel>();
-
-	private List<ArrayList<T>> allModelList = new ArrayList<ArrayList<T>>();
-
+	
 	// method for reading json file
-	public List<ArrayList<T>> readData(File file) throws FileNotFoundException, IOException, ParseException {
+	public void readData(File file) throws FileNotFoundException, IOException, ParseException, ClassNotFoundException, SQLException {
+		databaseDao.createTables();
 		ArrayList<Integer> mlist = new ArrayList<Integer>();
 
 		Object object = parser.parse(new FileReader(file));
@@ -46,11 +45,9 @@ public class JsonDataReader<T> {
 			int clinicId = Integer.parseInt(String.valueOf(clinic.get("ClinicId")));
 			clinicModel.setClinicId(clinicId);
 
-			// adding the model into list
-			clinicList.add(clinicModel);
+			databaseDao.addClinic(clinicModel);
 		}
 
-		allModelList.add((ArrayList<T>) clinicList);
 		/*------------------reading the data for doctors-------------------------*/
 		JSONArray doctorsArray = (JSONArray) jsonObj.get("Doctors");
 
@@ -60,16 +57,13 @@ public class JsonDataReader<T> {
 
 			// reading the json & setting the values inside model
 			JSONObject doctor = (JSONObject) doctorsArray.get(i);
-			Object obj = doctor.get("Name");
-			String name = (String) obj;
+			String name = (String) doctor.get("Name");
 			doctorModel.setDoctName(name);
 
-			obj = doctor.get("DoctID");
-			int idInfo = Integer.parseInt(String.valueOf(obj));
+			int idInfo = Integer.parseInt(String.valueOf(doctor.get("DoctID")));
 			doctorModel.setDoctId(idInfo);
 
-			obj = doctor.get("Specialization");
-			String specialization = (String) obj;
+			String specialization = (String) doctor.get("Specialization");
 			doctorModel.setDoctSpecialization(specialization);
 
 			mlist.clear();
@@ -78,10 +72,10 @@ public class JsonDataReader<T> {
 				mlist.add(Integer.parseInt(String.valueOf(clinicIdArray.get(j))));
 			}
 			doctorModel.setClinicIdList(mlist);
-			// adding the model into list
-			doctorList.add(doctorModel);
+			
+			databaseDao.addDoctor(doctorModel);
 		}
-		allModelList.add((ArrayList<T>) doctorList);
+		
 
 		/*------------------reading the data for Patients-------------------------*/
 		JSONArray patientsArray = (JSONArray) jsonObj.get("Patients");
@@ -90,6 +84,9 @@ public class JsonDataReader<T> {
 			PatientModel patientModel = new PatientModel();
 			JSONObject patient = (JSONObject) patientsArray.get(i);
 
+			int patientId = Integer.parseInt(String.valueOf(patient.get("PatientId")));
+			patientModel.setPatientId(patientId);
+			
 			String patientNo = (String) patient.get("MobileNo");
 			patientModel.setPatientNumber(patientNo);
 
@@ -106,11 +103,9 @@ public class JsonDataReader<T> {
 			}
 			patientModel.setClinicIdList(mlist);
 
-			patientList.add(patientModel);
+			databaseDao.addPatient(patientModel);
 		}
-		allModelList.add((ArrayList<T>) patientList);
-
-		return allModelList;
+		
 	}// end of method
 
 }
