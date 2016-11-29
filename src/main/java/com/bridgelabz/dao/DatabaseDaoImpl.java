@@ -84,7 +84,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 					+ clinicModel.getClinicName() + "')";
 			stmt.executeUpdate(sql);
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			// System.out.println(e);
+			System.out.println(e);
 		}
 	}
 
@@ -95,7 +95,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 					+ doctorModel.getDoctName() + "','" + doctorModel.getDoctSpecialization() + "')";
 			stmt.executeUpdate(sql);
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			// System.out.println(e);
+			System.out.println(e);
 		}
 
 		for (int i = 0; i < doctorModel.getClinicIdList().size(); i++) {
@@ -104,7 +104,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 						+ doctorModel.getClinicIdList().get(i) + ")";
 				stmt.executeUpdate(sql);
 			} catch (MySQLIntegrityConstraintViolationException e) {
-				// System.out.println(e);
+				System.out.println(e);
 			}
 		}
 
@@ -119,7 +119,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 			stmt.executeUpdate(sql);
 
 		} catch (MySQLIntegrityConstraintViolationException e) {
-			// System.out.println(e);
+			System.out.println(e);
 		}
 
 		for (int i = 0; i < patientModel.getClinicIdList().size(); i++) {
@@ -129,14 +129,14 @@ public class DatabaseDaoImpl implements DatabaseDao {
 				stmt.executeUpdate(sql);
 
 			} catch (MySQLIntegrityConstraintViolationException e) {
-				// System.out.println(e);
+				System.out.println(e);
 			}
 		}
 	}
 
 	// method for creating tables inside database
 	public void createTables() throws ClassNotFoundException, SQLException {
-		DatabaseConnection databaseConnection = new DatabaseConnection();
+		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 		this.stmt = databaseConnection.getConnection().createStatement();
 		this.createClinicTable();
 		this.createDoctorTable();

@@ -8,6 +8,7 @@ import java.sql.SQLException;
 import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.DataReader.JsonDataReader;
+import com.bridgelabz.dao.DatabaseConnection;
 
 public class ClinicManagementProgram{
 
@@ -15,6 +16,7 @@ public class ClinicManagementProgram{
 		
 		//creating the objects for class 
 		JsonDataReader mJsonReader = new JsonDataReader();
+		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 	
 		//getting the json file for doctors data
 		File mDoctFile = new File("JsonData.json");
@@ -23,5 +25,6 @@ public class ClinicManagementProgram{
 		 mJsonReader.readData(mDoctFile);
 		
 		 System.out.println("Done");
+		 databaseConnection.closeConnection();
 	}
 }

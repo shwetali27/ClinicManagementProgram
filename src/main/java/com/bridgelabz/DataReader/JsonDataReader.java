@@ -25,6 +25,7 @@ public class JsonDataReader {
 	
 	// method for reading json file
 	public void readData(File file) throws FileNotFoundException, IOException, ParseException, ClassNotFoundException, SQLException {
+		//initializing the tables inside database
 		databaseDao.createTables();
 		ArrayList<Integer> mlist = new ArrayList<Integer>();
 
