@@ -49,17 +49,29 @@
     {
       "MobileNo": "8912457421",
       "Age": 26,
-      "Name": "Ms. Nitu"
+      "Name": "Ms. Nitu",
+      "ClinicId": [
+        "10001",
+        "10005"
+      ]
     },
     {
       "MobileNo": "8745149657",
       "Age": 35,
-      "Name": "Mr. Dev"
+      "Name": "Mr. Dev",
+      "ClinicId": [
+        "10003"
+      ]
     },
     {
       "MobileNo": "7869124801",
       "Age": 38,
-      "Name": "Mrs. Khanna"
+      "Name": "Mrs. Khanna",
+      "ClinicId": [
+        "10002",
+        "10003",
+        "10004"
+      ]
     }
   ],
   "Clinic": [
