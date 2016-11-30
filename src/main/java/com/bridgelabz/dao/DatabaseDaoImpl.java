@@ -14,8 +14,8 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	private Statement stmt;
 	private String sql;
-	private ResultSet resultSet,patientresultSet;
-	
+	private ResultSet resultSet, patientresultSet, patientClinicResultSet,clinicResultSet;
+
 	// method for creating table clinic inside database
 	private void createClinicTable() {
 
@@ -214,22 +214,38 @@ public class DatabaseDaoImpl implements DatabaseDao {
 		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 		try {
 			this.stmt = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM PATIENT WHERE PATIENT.patientId="+patientId+";";
+			sql = "SELECT * FROM PATIENT WHERE PATIENT.patientId=" + patientId + ";";
 			patientresultSet = stmt.executeQuery(sql);
-			if (patientresultSet.next()){
-			String name = patientresultSet.getString("patientName");
-			System.out.println("Hello "+name);
-			}
-			else{
+			if (patientresultSet.next()) {
+				String name = patientresultSet.getString("patientName");
+				System.out.println("Hello " + name+"your available clinics are");
+
+				try {
+					sql = "SELECT PATIENT_CLINIC.clinicId FROM PATIENT_CLINIC NATURAL JOIN PATIENT WHERE PATIENT.patientId="
+							+ patientId + ";";
+					patientClinicResultSet = stmt.executeQuery(sql);
+					
+					while (patientClinicResultSet.next()) {
+						sql = "SELECT CLINIC.clinicName FROM CLINIC WHERE CLINIC.clinicId="
+								+ patientClinicResultSet.getInt("clinicId") + ";";
+						clinicResultSet = stmt.executeQuery(sql);
+						if(clinicResultSet.next()){
+							System.out.println(clinicResultSet.getString("clinicName"));
+						}
+					}
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+
+			} else {
 				System.out.println("no data found");
 			}
-			/*sql = "SELECT * FROM PATIENT_CLINIC NATURAL JOIN PATIENT WHERE PATIENT.patientId=1";
-			ResultSet rs = stmt.executeQuery(sql);*/
-			
+
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			System.out.println(e);
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}//end of method
+	}// end of method
 }
