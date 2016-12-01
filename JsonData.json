@@ -4,44 +4,67 @@
       "Name": "Dr. Joshi",
       "DoctID": 101,
       "Specialization": "Heart",
-      "ClinicId": [
-        "10001",
-        "10002"
+      "Clinic": [
+        {
+          "ClinicID": "10001",
+          "Availability": "Morning"
+        },
+        {
+          "ClinicID": "10002",
+          "Availability": "Evening"
+        }
       ]
     },
     {
       "Name": "Dr. Patel",
       "DoctID": 102,
       "Specialization": "Eyes",
-      "ClinicId": [
-        "10001"
+      "Clinic": [
+        {
+          "ClinicID": "10003",
+          "Availability": "Morning/Evening"
+        }
       ]
     },
     {
       "Name": "Dr. Naved",
       "DoctID": 103,
       "Specialization": "Brain",
-      "ClinicId": [
-        "10003",
-        "10004",
-        "10005"
+      "Clinic": [
+        {
+          "ClinicID": "10001",
+          "Availability": "Morning"
+        },
+        {
+          "ClinicID": "10005",
+          "Availability": "Evening"
+        }
       ]
     },
     {
       "Name": "Dr. Desai",
       "DoctID": 104,
       "Specialization": "General",
-      "ClinicId": [
-        "10001",
-        "10005"
+      "Clinic": [
+        {
+          "ClinicID": "10003",
+          "Availability": "Morning"
+        },
+        {
+          "ClinicID": "10004",
+          "Availability": "Evening"
+        }
       ]
     },
     {
       "Name": "Dr. Jeet",
       "DoctID": 105,
       "Specialization": "Skin",
-      "ClinicId": [
-        "10002"
+      "Clinic": [
+        {
+          "ClinicID": "10003",
+          "Availability": "Evening"
+        }
       ]
     }
   ],

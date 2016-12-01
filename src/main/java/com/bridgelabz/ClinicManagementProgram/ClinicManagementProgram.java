@@ -1,12 +1,7 @@
 package com.bridgelabz.ClinicManagementProgram;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.sql.SQLException;
 import java.util.ArrayList;
-
-import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.DataReader.JsonDataReader;
 import com.bridgelabz.dao.DatabaseDao;
@@ -17,8 +12,7 @@ import com.bridgelabz.utility.Utility;
 
 public class ClinicManagementProgram {
 
-	public static void main(String[] args)
-			throws FileNotFoundException, IOException, ParseException, ClassNotFoundException, SQLException {
+	public static void main(String[] args) {
 
 		// creating the objects for class
 		Utility utility = new Utility();
@@ -36,7 +30,7 @@ public class ClinicManagementProgram {
 		// reading the file and storing the values inside list
 		mJsonReader.readData(mDoctFile);
 
-		boolean check = true;
+		/*boolean check = true;
 		while (check) {
 			System.out.println("\n\nWelcome, Please choose Your Option");
 
@@ -51,22 +45,35 @@ public class ClinicManagementProgram {
 					System.out.println("Sorry No Data Available For ID=" + patientId);
 					break;
 				}
-				
+
 				System.out.println("Hello " + patientName);
-				System.out.println("Available Clinics are:");
 				clinicModelList = databaseDao.takeclinicInfo(patientId);
-				for (int i = 0; i < clinicModelList.size(); i++) {
-					System.out.println("Clinic Name: " + clinicModelList.get(i).getClinicName());
-					System.out.println("Clinic Id: " + clinicModelList.get(i).getClinicId() + "\n--------");
+				System.out.println("Available Clinics are:" + "\nClinic_ID\tClinic_Name");
+
+				for (ClinicModel clinicModel : clinicModelList) {
+					System.out.print(clinicModel.getClinicId() + "\t\t");
+					System.out.print(clinicModel.getClinicName() + "\n");
 				}
 				
 				System.out.println("Please Choose Clinic Id");
 				int clinicId = utility.inputInteger();
 				doctorModelList = databaseDao.takeDoctorInfo(clinicId);
-				System.out.println("Available doctors are:");
-				for (int i = 0; i < doctorModelList.size(); i++) {
-					System.out.println(doctorModelList.get(i).getDoctName());
+
+				while (doctorModelList.size() == 0) {
+					System.out.println("Wrong Choice!! Please Choose valid Clinic Id");
+					clinicId = utility.inputInteger();
+					doctorModelList = databaseDao.takeDoctorInfo(clinicId);
 				}
+
+				doctorModelList = databaseDao.takeDoctorInfo(clinicId);
+				System.out.println("Available doctors are:\nDoct_ID\tDoct_Name\tDoct_Specialization");
+				
+				for (DoctorModel doctorModel : doctorModelList) {
+					System.out.println(doctorModel.getDoctId() 
+							+ "\t" + doctorModel.getDoctName()
+							+ "\t" + doctorModel.getDoctSpecialization());
+				}
+				
 				break;
 			}
 			case 2: {
@@ -79,7 +86,7 @@ public class ClinicManagementProgram {
 			}
 			}// end of switch
 		} // end of while
-
+*/
 		// databaseDaoImpl.showData();
 		System.out.println("Done");
 		// databaseConnection.closeConnection();

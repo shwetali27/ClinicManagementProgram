@@ -56,7 +56,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 		}
 
 		try {
-			sql = "CREATE TABLE DOCTOR_CLINIC " + "(doctId int NOT NULL, " + " clinicId int NOT NULL ,"
+			sql = "CREATE TABLE DOCTOR_CLINIC " + "(doctId int NOT NULL, " + " clinicId int NOT NULL ,"+"availability VARCHAR(255), "
 					+ "FOREIGN KEY (clinicId) REFERENCES CLINIC (clinicId))";
 
 			stmt.executeUpdate(sql);
@@ -136,8 +136,8 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 		for (int i = 0; i < doctorModel.getClinicIdList().size(); i++) {
 			try {
-				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId) VALUES (" + doctorModel.getDoctId() + ","
-						+ doctorModel.getClinicIdList().get(i) + ")";
+				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorModel.getDoctId() + ","
+						+ doctorModel.getClinicIdList().get(i) +",'"+doctorModel.getAvailabilityList().get(i)+"')";
 				stmt.executeUpdate(sql);
 			} catch (MySQLIntegrityConstraintViolationException e) {
 				System.out.println(e);
@@ -189,8 +189,6 @@ public class DatabaseDaoImpl implements DatabaseDao {
 		this.createDoctorTable();
 		this.createPatientTable();
 	}
-
-	
 
 	// method to check for patient
 	public String checkForPatient(int pPatientId) {

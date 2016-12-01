@@ -7,6 +7,7 @@ public class DoctorModel {
 	private String doctName;
 	private String doctSpecialization;
 	private ArrayList<Integer> clinicIdList;
+	private ArrayList<String> availabilityList;
 	
 	//getters and setters
 	public int getDoctId() {
@@ -32,6 +33,12 @@ public class DoctorModel {
 	}
 	public void setClinicIdList(ArrayList<Integer> clinicIdList) {
 		this.clinicIdList = clinicIdList;
+	}
+	public ArrayList<String> getAvailabilityList() {
+		return availabilityList;
+	}
+	public void setAvailabilityList(ArrayList<String> availabilityList) {
+		this.availabilityList = availabilityList;
 	}
 	
 }
