@@ -19,7 +19,7 @@ public interface DatabaseDao {
 	
 	public ArrayList<ClinicModel> takeclinicInfo(int pPatientId);
 
-	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId);
+	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId,String pAvailability);
 	
 	
 }

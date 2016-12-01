@@ -44,7 +44,7 @@ public class JsonDataReader {
 		JSONObject jsonObj = (JSONObject) object;
 
 		/*------------------reading the data for Clinic-------------------------*/
-		JSONArray clinicArray = (JSONArray) jsonObj.get("Clinic");
+		JSONArray clinicArray = (JSONArray) jsonObj.get("Clinics");
 		for (int i = 0; i < clinicArray.size(); i++) {
 			// creating the object for clinic model
 			ClinicModel clinicModel = new ClinicModel();
@@ -93,8 +93,6 @@ public class JsonDataReader {
 			doctorModel.setClinicIdList(mCliniclist);
 			doctorModel.setAvailabilityList(mAvailabilityList);
 			
-			System.out.println("-------------------------");
-
 			databaseDao.addDoctor(doctorModel);
 		}
 
