@@ -3,18 +3,28 @@ package com.bridgelabz.dao;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
+import com.bridgelabz.utility.Utility;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
 public class DatabaseDaoImpl implements DatabaseDao {
+	// objects for classes
+	Utility utility = new Utility();
+	DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
 
-	private Statement stmt;
+	//objects of list
+	ArrayList<ClinicModel> clinicModelList = new ArrayList<ClinicModel>();
+	ArrayList<DoctorModel> doctorModelList = new ArrayList<DoctorModel>();
+	
+	//variables 
+	private Statement stmt, stmt2;
 	private String sql;
-	private ResultSet resultSet, patientresultSet, patientClinicResultSet,clinicResultSet;
+	private ResultSet resultSet, patientresultSet, patientClinicResultSet, clinicResultSet;
 
 	// method for creating table clinic inside database
 	private void createClinicTable() {
@@ -180,66 +190,16 @@ public class DatabaseDaoImpl implements DatabaseDao {
 		this.createPatientTable();
 	}
 
-	public void showData() {
-		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+	
+
+	// method to check for patient
+	public String checkForPatient(int pPatientId) {
 		try {
-			this.stmt = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM DOCTOR_CLINIC NATURAL JOIN DOCTOR WHERE DOCTOR_CLINIC.clinicId=10001";
-			resultSet = stmt.executeQuery(sql);
-
-			while (resultSet.next()) {
-				System.out.println("inside while");
-				// Retrieve by column name
-				int id = resultSet.getInt("doctId");
-				int clinicId = resultSet.getInt("clinicId");
-				String name = resultSet.getString("doctName");
-				String specialization = resultSet.getString("doctSpecialization");
-
-				// Display values
-				System.out.print("ID: " + id);
-				System.out.print(", clinic id: " + clinicId);
-				System.out.print(", doctName: " + name);
-				System.out.print(", First: " + specialization);
-
-			}
-		} catch (MySQLIntegrityConstraintViolationException e) {
-			System.out.println(e);
-		} catch (SQLException e) {
-			System.out.println(e);
-		}
-	}
-
-	// method for taking appointment for particular patient
-	public void takeAppointment(int patientId) {
-		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-		try {
-			this.stmt = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM PATIENT WHERE PATIENT.patientId=" + patientId + ";";
+			stmt = databaseConnection.getConnection().createStatement();
+			sql = "SELECT * FROM PATIENT WHERE PATIENT.patientId=" + pPatientId + ";";
 			patientresultSet = stmt.executeQuery(sql);
 			if (patientresultSet.next()) {
-				String name = patientresultSet.getString("patientName");
-				System.out.println("Hello " + name+"your available clinics are");
-
-				try {
-					sql = "SELECT PATIENT_CLINIC.clinicId FROM PATIENT_CLINIC NATURAL JOIN PATIENT WHERE PATIENT.patientId="
-							+ patientId + ";";
-					patientClinicResultSet = stmt.executeQuery(sql);
-					
-					while (patientClinicResultSet.next()) {
-						sql = "SELECT CLINIC.clinicName FROM CLINIC WHERE CLINIC.clinicId="
-								+ patientClinicResultSet.getInt("clinicId") + ";";
-						clinicResultSet = stmt.executeQuery(sql);
-						if(clinicResultSet.next()){
-							System.out.println(clinicResultSet.getString("clinicName"));
-						}
-					}
-
-				} catch (SQLException e) {
-					e.printStackTrace();
-				}
-
-			} else {
-				System.out.println("no data found");
+				return patientresultSet.getString("patientName");
 			}
 
 		} catch (MySQLIntegrityConstraintViolationException e) {
@@ -247,5 +207,62 @@ public class DatabaseDaoImpl implements DatabaseDao {
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
-	}// end of method
+		return null;
+	}
+
+	//method for taking Clinic information
+	public ArrayList<ClinicModel> takeclinicInfo(int pPatientId) {
+		clinicModelList.clear();
+		try {
+			stmt = databaseConnection.getConnection().createStatement();
+			stmt2 = databaseConnection.getConnection().createStatement();
+
+			sql = "SELECT PATIENT_CLINIC.clinicId FROM PATIENT_CLINIC NATURAL JOIN PATIENT WHERE PATIENT.patientId="
+					+ pPatientId + ";";
+			patientClinicResultSet = stmt.executeQuery(sql);
+
+			while (patientClinicResultSet.next()) {
+				
+				sql = "SELECT * FROM CLINIC WHERE CLINIC.clinicId=" + patientClinicResultSet.getInt("clinicId") + ";";
+				clinicResultSet = stmt2.executeQuery(sql);
+				if (clinicResultSet.next()) {
+					ClinicModel clinicModel = new ClinicModel();
+					clinicModel.setClinicId(clinicResultSet.getInt("clinicId"));
+					clinicModel.setClinicName(clinicResultSet.getString("clinicName"));
+					clinicModelList.add(clinicModel);
+				}
+				
+			}
+		} catch (MySQLIntegrityConstraintViolationException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return clinicModelList;
+	}
+	
+	//method for taking doctors information
+	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId){
+		doctorModelList.clear();
+		try{
+			stmt = databaseConnection.getConnection().createStatement();
+			sql = "SELECT * FROM DOCTOR NATURAL JOIN DOCTOR_CLINIC WHERE DOCTOR_CLINIC.clinicId="+pClinicId+";";
+			resultSet = stmt.executeQuery(sql);
+			while (resultSet.next()){
+				DoctorModel doctorModel = new DoctorModel();
+				doctorModel.setDoctId(resultSet.getInt("doctId"));
+				doctorModel.setDoctName(resultSet.getString("doctName"));
+				doctorModel.setDoctSpecialization(resultSet.getString("doctSpecialization"));
+				doctorModelList.add(doctorModel);
+			}			
+		}catch (MySQLIntegrityConstraintViolationException e) {
+			System.out.println(e);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+
+		return doctorModelList;
+		
+	}
 }

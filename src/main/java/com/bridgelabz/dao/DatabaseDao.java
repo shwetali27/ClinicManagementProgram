@@ -1,5 +1,7 @@
 package com.bridgelabz.dao;
 
+import java.util.ArrayList;
+
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
@@ -12,8 +14,12 @@ public interface DatabaseDao {
 	public void addPatient(PatientModel patientModel);
 
 	public void createTables();
+
+	public String checkForPatient(int pPatientId);
 	
-	public void takeAppointment(int patientId);
+	public ArrayList<ClinicModel> takeclinicInfo(int pPatientId);
+
+	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId);
 	
-	public void showData();
+	
 }
