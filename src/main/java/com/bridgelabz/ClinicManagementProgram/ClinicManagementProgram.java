@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import com.bridgelabz.DataReader.JsonDataReader;
 import com.bridgelabz.dao.DatabaseDao;
 import com.bridgelabz.dao.DatabaseDaoImpl;
+import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.utility.Utility;
@@ -18,18 +19,19 @@ public class ClinicManagementProgram {
 		Utility utility = new Utility();
 		JsonDataReader mJsonReader = new JsonDataReader();
 		DatabaseDao databaseDao = new DatabaseDaoImpl();
+		AppointmentModel appointmentModel = new AppointmentModel();
 
 		// objects for lists
 		ArrayList<ClinicModel> clinicModelList = new ArrayList<ClinicModel>();
 		ArrayList<DoctorModel> doctorModelList = new ArrayList<DoctorModel>();
-		
+
 		ArrayList<Integer> clinicList = new ArrayList<Integer>();
 		ArrayList<Integer> doctorList = new ArrayList<Integer>();
-		
+
 		// objects for variables
-		int choice, patientId,timeChoice,clinicId,doctorId;
+		int choice, patientId, timeChoice, clinicId, doctorId;
 		String availability;
-		
+
 		// getting the json file for doctors data
 		File mDoctFile = new File("JsonData.json");
 
@@ -46,7 +48,7 @@ public class ClinicManagementProgram {
 			case 1: {
 				clinicList.clear();
 				doctorList.clear();
-				
+
 				System.out.println("Please Enter your Id");
 				patientId = utility.inputInteger();
 				String patientName = databaseDao.checkForPatient(patientId);
@@ -54,24 +56,25 @@ public class ClinicManagementProgram {
 					System.out.println("Sorry No Data Available For ID=" + patientId);
 					break;
 				}
-
+				appointmentModel.setPatientId(patientId);
 				System.out.println("Hello " + patientName);
-				
-				//asking user for morning or evening time
+
+				// asking user for morning or evening time
 				System.out.println("Please Select\n1.Morning\n2.Evening");
 				timeChoice = utility.inputInteger();
-				while(!(timeChoice==1|timeChoice==2)){
+				while (!(timeChoice == 1 | timeChoice == 2)) {
 					System.out.println("Please select 1 or 2");
 					timeChoice = utility.inputInteger();
 				}
-				if(timeChoice==1){
+				if (timeChoice == 1) {
 					availability = "Morning";
-				}
-				else{
+					appointmentModel.setSession(availability);
+				} else {
 					availability = "Evening";
+					appointmentModel.setSession(availability);
 				}
-				
-				//displaying clinics for patient
+
+				// displaying clinics for patient
 				clinicModelList = databaseDao.takeclinicInfo(patientId);
 				System.out.println("Available Clinics are:" + "\nClinic_ID\tClinic_Name");
 
@@ -80,8 +83,8 @@ public class ClinicManagementProgram {
 					clinicList.add(clinicModel.getClinicId());
 					System.out.print(clinicModel.getClinicName() + "\n");
 				}
-				
-				//getting doctors for particular data
+
+				// getting doctors for particular data
 				System.out.println("Please Choose Clinic Id");
 				clinicId = utility.inputInteger();
 
@@ -89,29 +92,36 @@ public class ClinicManagementProgram {
 					System.out.println("Wrong Choice!! Please Choose valid Clinic Id");
 					clinicId = utility.inputInteger();
 				}
+				appointmentModel.setClinicId(clinicId);
 
-				doctorModelList = databaseDao.takeDoctorInfo(clinicId,availability);
-				if(doctorModelList.size()==0){
+				doctorModelList = databaseDao.takeDoctorInfo(clinicId, availability);
+				if (doctorModelList.size() == 0) {
 					System.out.println("Sorry no doctor available for this session");
 					break;
 				}
-				
+
 				System.out.println("Available doctors are:\nDoct_ID\tDoct_Name\tDoct_Specialization");
 				for (DoctorModel doctorModel : doctorModelList) {
 					doctorList.add(doctorModel.getDoctId());
-					System.out.println(doctorModel.getDoctId() 
-							+ "\t" + doctorModel.getDoctName()
-							+ "\t" + doctorModel.getDoctSpecialization());
+					System.out.println(doctorModel.getDoctId() + "\t" + doctorModel.getDoctName() + "\t"
+							+ doctorModel.getDoctSpecialization());
 				}
-				
-				//selecting doctor
+
+				// selecting doctor
 				System.out.println("Please Choose Doctor ID: ");
 				doctorId = utility.inputInteger();
-				while (!(doctorList.contains(clinicId))) {
-					System.out.println("Wrong Choice!! Please Choose valid Clinic Id");
-					clinicId = utility.inputInteger();
+				while (!(doctorList.contains(doctorId))) {
+					System.out.println("Wrong Choice!! Please Choose valid Doctor Id");
+					doctorId = utility.inputInteger();
 				}
+				appointmentModel.setDoctorId(doctorId);
+				System.out.println(appointmentModel.getClinicId() + "," + appointmentModel.getPatientId() + ","
+						+ appointmentModel.getDoctorId()+","+appointmentModel.getSession());
 				
+				appointmentModel = databaseDao.checkAppointment(appointmentModel);
+				
+				System.out.println(appointmentModel.getClinicId() + "," + appointmentModel.getPatientId() + ","
+						+ appointmentModel.getDoctorId()+","+appointmentModel.getSession());
 				break;
 			}
 			case 2: {
@@ -122,6 +132,7 @@ public class ClinicManagementProgram {
 				System.out.println("Wrong Choice!!");
 				break;
 			}
+
 			}// end of switch
 		} // end of while
 

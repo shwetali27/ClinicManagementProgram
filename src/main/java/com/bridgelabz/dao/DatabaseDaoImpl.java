@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
+import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
@@ -38,6 +39,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 		this.createClinicTable();
 		this.createDoctorTable();
 		this.createPatientTable();
+		this.createAppointmentsTable();
 	}
 
 	// method for creating table clinic inside database
@@ -120,6 +122,21 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	}
 
+	private void createAppointmentsTable() {
+		try {
+			sql = "CREATE TABLE APPOINMENTS " + "(patientId int NOT NULL, " + "doctId int NOT NULL, "
+					+ "clinicId int NOT NULL, " + " date VARCHAR(255), " + " session VARCHAR(255), "
+					+ "FOREIGN KEY (clinicId) REFERENCES CLINIC (clinicId),"
+					+ "FOREIGN KEY (doctId) REFERENCES DOCTOR (doctId),"
+					+ "FOREIGN KEY (patientId) REFERENCES PATIENT (patientId))";
+
+			stmt.executeUpdate(sql);
+		} catch (MySQLSyntaxErrorException e) {
+			System.out.println("Table Already Exists");
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
+	}
 	/*--------------------------------------adding data inside database-------------------------------------*/
 
 	// putting the values inside clinic
@@ -266,4 +283,10 @@ public class DatabaseDaoImpl implements DatabaseDao {
 		return doctorModelList;
 
 	}
+	//method for taking appointment
+	public AppointmentModel checkAppointment(AppointmentModel appointmentModel){
+		appointmentModel.setSession("Evening");
+		return appointmentModel;
+	}
+
 }

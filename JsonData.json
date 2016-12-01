@@ -33,7 +33,7 @@
       "Clinic": [
         {
           "ClinicID": "10001",
-          "Availability": "Morning"
+          "Availability": "Evening"
         },
         {
           "ClinicID": "10005",
@@ -61,6 +61,10 @@
       "DoctID": 105,
       "Specialization": "Skin",
       "Clinic": [
+      	{
+          "ClinicID": "10001",
+          "Availability": "Evening"
+        },
         {
           "ClinicID": "10003",
           "Availability": "Evening"

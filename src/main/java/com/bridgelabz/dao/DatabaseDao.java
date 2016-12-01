@@ -2,6 +2,7 @@ package com.bridgelabz.dao;
 
 import java.util.ArrayList;
 
+import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
@@ -21,5 +22,5 @@ public interface DatabaseDao {
 
 	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId,String pAvailability);
 	
-	
+	public AppointmentModel checkAppointment(AppointmentModel appointmentModel);
 }
