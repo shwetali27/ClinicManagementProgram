@@ -2,8 +2,10 @@ package com.bridgelabz.ClinicManagementProgram;
 
 import java.io.File;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 
 import com.bridgelabz.DataReader.JsonDataReader;
@@ -35,30 +37,42 @@ public class ClinicManagementProgram {
 
 		// objects for variables
 		int choice, patientId, timeChoice, clinicId, doctorId;
-		String availability;
+		String availability,date=null,nextDay=null;
 
 		// getting the json file for doctors data
 		File mDoctFile = new File("JsonData.json");
 
-		// selecting the current Date
+		// selecting the Date for appointment
+		try{
 		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		String date = dateFormat.format(new Date());
-		System.out.println(date);
-		// reading the file and storing the values inside list
-		mJsonReader.readData(mDoctFile);
-
+		date = dateFormat.format(new Date());
+		Calendar calender = Calendar.getInstance();
+		calender.setTime(dateFormat.parse(date));
+		calender.add(Calendar.DATE, 1);
+		nextDay = dateFormat.format(calender.getTime());
+		}catch(ParseException e){
+			System.out.println(e);
+		}
+		
+		System.out.println(date+"\n"+nextDay);
+		
 		boolean check = true;
 		while (check) {
 			System.out.println("\n\nWelcome, Please choose Your Option");
 
-			System.out.println("1.Take Appoinment \n2.Exit");
+			System.out.println("1.Read Json Data\n2.Take Appoinment \n3.Exit");
 			choice = utility.inputInteger();
 			switch (choice) {
-			case 1: {
+			case 1:{
+				// reading the file and storing the values inside list
+				mJsonReader.readData(mDoctFile);
+				break;
+			}
+			case 2: {
 				clinicList.clear();
 				doctorList.clear();
 
-				appointmentModel.setDate(date);
+				appointmentModel.setDate(nextDay);
 				System.out.println("Please Enter your Id");
 				patientId = utility.inputInteger();
 				String patientName = databaseDao.checkForPatient(patientId);
@@ -69,7 +83,7 @@ public class ClinicManagementProgram {
 				appointmentModel.setPatientId(patientId);
 				System.out.println("Hello " + patientName);
 
-				// asking user for morning or evening time
+				// asking user for morning or evening session
 				System.out.println("Please Select\n1.Morning\n2.Evening");
 				timeChoice = utility.inputInteger();
 				while (!(timeChoice == 1 | timeChoice == 2)) {
@@ -130,7 +144,7 @@ public class ClinicManagementProgram {
 				
 				break;
 			}
-			case 2: {
+			case 3: {
 				check = false;
 				break;
 			}
@@ -142,7 +156,6 @@ public class ClinicManagementProgram {
 			}// end of switch
 		} // end of while
 
-		// databaseDaoImpl.showData();
 		System.out.println("Done");
 		// databaseConnection.closeConnection();
 	}

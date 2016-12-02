@@ -6,50 +6,56 @@ import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.utility.Utility;
 
 public class UserOperations {
-	//objects for variables
-	String checkAvalability;
 
-	//objects for class
+	// objects for class
 	DatabaseDao databaseDao = new DatabaseDaoImpl();
 	Utility utility = new Utility();
-	
-	public void checkFuction(AppointmentModel pAppointmentModel){
+
+	public void checkFuction(AppointmentModel pAppointmentModel) {
+		// objects for variables
+		String checkAvalability, patientAvailabilityChoice;
+		patientAvailabilityChoice = pAppointmentModel.getSession();
 		int valid = databaseDao.checkAppointment(pAppointmentModel);
 
-		if(valid==1){
-			System.out.println("Appointment is already taken");
+		if (valid == 1) {
+			System.out.println("Appointment is already taken for Date " + pAppointmentModel.getDate() + " on "
+					+ pAppointmentModel.getSession() + " Session");
 		}
-		
-		else if(valid==2){
-			System.out.println("No appointments available");
+
+		else if (valid == 2) {
+			System.out.println("No appointments available for Date " + pAppointmentModel.getDate() + " on "
+					+ pAppointmentModel.getSession() + " Session");
+
+			// checking availability for doctor
 			checkAvalability = databaseDao.checkDoctAvailability(pAppointmentModel);
-			System.out.println(checkAvalability);
-			System.out.println("app session: "+pAppointmentModel.getSession());
-			if(checkAvalability.trim().equals("Morning-Evening")){
-				System.out.println(pAppointmentModel.getSession()+"::");
-				if(pAppointmentModel.getSession()=="Morning"){
+
+			// if doctor is available for both sessions then asking user for
+			// another session
+			if (checkAvalability.trim().equals("Morning-Evening")) {
+				if (pAppointmentModel.getSession() == "Morning") {
 					System.out.println("Do you want to take appointment for evening session? y/n");
 					String choice = utility.inputString();
-					if(choice.equals("y")){
+					if (choice.equals("y")) {
 						pAppointmentModel.setSession("Evening");
 						this.checkFuction(pAppointmentModel);
+					} else {
+						System.out.println("Do you want to take appointment for");
 					}
-					else{
-						System.out.println("Thanks for visit");
-					}
-				}
-				else{
+				} else {
 					System.out.println("Evening");
 				}
+			} else {
+				System.out.println("Appointment for another day");
 			}
-		}
-		else{
-			System.out.println(pAppointmentModel.getClinicId() + "," + pAppointmentModel.getPatientId() + ","
-					+ pAppointmentModel.getDoctorId() + "," + pAppointmentModel.getSession() + ","
-					+ pAppointmentModel.getDate());
+		} else {
 
-			String result = databaseDao.takeAppointment(pAppointmentModel);
-			System.out.println(result);
+			/*System.out.println(pAppointmentModel.getClinicId() + "," + pAppointmentModel.getPatientId() + ","
+					+ pAppointmentModel.getDoctorId() + "," + pAppointmentModel.getSession() + ","
+					+ pAppointmentModel.getDate());*/
+
+			databaseDao.takeAppointment(pAppointmentModel);
+			System.out.println("Your appointment is done for " + pAppointmentModel.getSession() + " Session on "
+					+ pAppointmentModel.getDate());
 		}
 	}
 }

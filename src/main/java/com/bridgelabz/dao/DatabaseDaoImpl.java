@@ -23,19 +23,18 @@ public class DatabaseDaoImpl implements DatabaseDao {
 	ArrayList<DoctorModel> doctorModelList = new ArrayList<DoctorModel>();
 
 	// variables
-	private Statement stmt, stmt2;
+	private Statement stmt,stmt2;
 	private String sql;
-	private ResultSet resultSet, patientresultSet, patientClinicResultSet, clinicResultSet;
-
+	
 	// method for creating tables inside database
 	public void createTables() {
-		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
-		try {
-			this.stmt = databaseConnection.getConnection().createStatement();
+		try{
+			stmt = databaseConnection.getConnection().createStatement();
+		} catch (MySQLSyntaxErrorException e) {
+			System.out.println("Table Already Exists");
 		} catch (SQLException e) {
 			System.out.println(e);
 		}
-
 		this.createClinicTable();
 		this.createDoctorTable();
 		this.createPatientTable();
@@ -44,7 +43,6 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method for creating table clinic inside database
 	private void createClinicTable() {
-
 		try {
 			sql = "CREATE TABLE CLINIC " + "(clinicId int NOT NULL, " + " clinicName VARCHAR(255), "
 					+ " PRIMARY KEY ( clinicId ))";
@@ -141,7 +139,6 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// putting the values inside clinic
 	public void addClinic(ClinicModel clinicModel) {
-
 		try {
 			sql = "INSERT INTO CLINIC(clinicId,clinicName) VALUES (" + clinicModel.getClinicId() + ",'"
 					+ clinicModel.getClinicName() + "')";
@@ -209,9 +206,10 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method to check for patient
 	public String checkForPatient(int pPatientId) {
+		ResultSet patientresultSet;
 		try {
 			stmt = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM PATIENT WHERE PATIENT.patientId=" + pPatientId + ";";
+			sql = "SELECT PATIENT.patientName FROM PATIENT WHERE PATIENT.patientId=" + pPatientId + ";";
 			patientresultSet = stmt.executeQuery(sql);
 			if (patientresultSet.next()) {
 				return patientresultSet.getString("patientName");
@@ -227,6 +225,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method for taking Clinic information
 	public ArrayList<ClinicModel> takeclinicInfo(int pPatientId) {
+		ResultSet patientClinicResultSet,clinicResultSet;
 		clinicModelList.clear();
 		try {
 			stmt = databaseConnection.getConnection().createStatement();
@@ -259,6 +258,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method for taking doctors information
 	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId, String pAvailability) {
+		ResultSet resultSet;
 		doctorModelList.clear();
 		try {
 			stmt = databaseConnection.getConnection().createStatement();
@@ -286,22 +286,22 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method for checking for appointment
 	public int checkAppointment(AppointmentModel appointmentModel) {
+		ResultSet resultSet,patientresultSet;
 		try {
 			int i = 0, j = 0;
 			stmt = databaseConnection.getConnection().createStatement();
 			stmt2 = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.doctId="
-					+ appointmentModel.getDoctorId() + " AND APPOINMENTS.session='" + appointmentModel.getSession()
-					+ "' AND APPOINMENTS.date='" + appointmentModel.getDate() + "';";
+			sql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.doctId=" + appointmentModel.getDoctorId()
+					+ " AND APPOINMENTS.session='" + appointmentModel.getSession() + "' AND APPOINMENTS.date='"
+					+ appointmentModel.getDate() + "';";
 			resultSet = stmt.executeQuery(sql);
 
-			System.out.println(sql);
-			sql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.patientId="
-					+ appointmentModel.getPatientId() + " AND APPOINMENTS.session='" + appointmentModel.getSession()
-					+ "' AND APPOINMENTS.date='" + appointmentModel.getDate() + "' AND APPOINMENTS.doctId="
-					+ appointmentModel.getDoctorId() + ";";
+			//System.out.println(sql);
+			sql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.patientId=" + appointmentModel.getPatientId()
+					+ " AND APPOINMENTS.session='" + appointmentModel.getSession() + "' AND APPOINMENTS.date='"
+					+ appointmentModel.getDate() + "' AND APPOINMENTS.doctId=" + appointmentModel.getDoctorId() + ";";
 
-			 System.out.println(sql);
+			//System.out.println(sql);
 			patientresultSet = stmt2.executeQuery(sql);
 			while (resultSet.next()) {
 				i++;
@@ -313,11 +313,9 @@ public class DatabaseDaoImpl implements DatabaseDao {
 			if (j != 0) {
 				return 1;
 			}
-			System.out.println("i=" + i);
 			if (i >= 3) {
 				return 2;
 			}
-			System.out.println(i);
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			System.out.println(e);
 		} catch (SQLException e) {
@@ -329,7 +327,6 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method for taking appointment
 	public String takeAppointment(AppointmentModel appointmentmodel) {
-
 		try {
 			stmt = databaseConnection.getConnection().createStatement();
 			sql = "INSERT INTO APPOINMENTS(patientId,doctId,clinicId,date,session) VALUES("
@@ -337,7 +334,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 					+ appointmentmodel.getClinicId() + ",'" + appointmentmodel.getDate() + "','"
 					+ appointmentmodel.getSession() + "');";
 
-			System.out.println(sql);
+			//System.out.println(sql);
 			stmt.executeUpdate(sql);
 
 		} catch (MySQLIntegrityConstraintViolationException e) {
@@ -351,14 +348,15 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// checking method for doctors availability
 	public String checkDoctAvailability(AppointmentModel appointmentModel) {
+		ResultSet resultSet;
 		try {
 			stmt = databaseConnection.getConnection().createStatement();
 			sql = "SELECT * FROM DOCTOR NATURAL JOIN DOCTOR_CLINIC WHERE DOCTOR_CLINIC.doctId="
 					+ appointmentModel.getDoctorId() + " AND DOCTOR_CLINIC.clinicId=" + appointmentModel.getClinicId()
 					+ ";";
-			
+
 			resultSet = stmt.executeQuery(sql);
-			if(resultSet.next()){
+			if (resultSet.next()) {
 				return resultSet.getString("availability");
 			}
 		} catch (MySQLIntegrityConstraintViolationException e) {
