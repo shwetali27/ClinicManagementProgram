@@ -22,7 +22,7 @@
       "Clinic": [
         {
           "ClinicID": "10003",
-          "Availability": "Morning/Evening"
+          "Availability": "Morning-Evening"
         }
       ]
     },
@@ -63,7 +63,7 @@
       "Clinic": [
         {
           "ClinicID": "10001",
-          "Availability": "E"
+          "Availability": "Morning"
         },
         {
           "ClinicID": "10003",

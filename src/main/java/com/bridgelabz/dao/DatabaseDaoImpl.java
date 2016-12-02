@@ -264,7 +264,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 			stmt = databaseConnection.getConnection().createStatement();
 			sql = "SELECT * FROM DOCTOR NATURAL JOIN DOCTOR_CLINIC WHERE DOCTOR_CLINIC.clinicId=" + pClinicId
 					+ " and (DOCTOR_CLINIC.availability='" + pAvailability
-					+ "' or DOCTOR_CLINIC.availability='Morning/Evening');";
+					+ "' or DOCTOR_CLINIC.availability='Morning-Evening');";
 
 			resultSet = stmt.executeQuery(sql);
 			while (resultSet.next()) {
