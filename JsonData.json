@@ -33,7 +33,7 @@
       "Clinic": [
         {
           "ClinicID": "10001",
-          "Availability": "Evening"
+          "Availability": "Morning"
         },
         {
           "ClinicID": "10005",
@@ -61,9 +61,9 @@
       "DoctID": 105,
       "Specialization": "Skin",
       "Clinic": [
-      	{
+        {
           "ClinicID": "10001",
-          "Availability": "Evening"
+          "Availability": "E"
         },
         {
           "ClinicID": "10003",
@@ -101,6 +101,39 @@
         "10002",
         "10003",
         "10004"
+      ]
+    },
+    {
+      "PatientId": "4",
+      "MobileNo": "9914500127",
+      "Age": 30,
+      "Name": "Mrs. Deepa",
+      "ClinicId": [
+        "10001",
+        "10002",
+        "10004"
+      ]
+    },
+    {
+      "PatientId": "5",
+      "MobileNo": "7708105986",
+      "Age": 5,
+      "Name": "Meena",
+      "ClinicId": [
+        "10001",
+        "10003",
+        "10005"
+      ]
+    },
+    {
+      "PatientId": "6",
+      "MobileNo": "8501340011",
+      "Age": 12,
+      "Name": "Tara",
+      "ClinicId": [
+        "10001",
+        "10003",
+        "10005"
       ]
     }
   ],

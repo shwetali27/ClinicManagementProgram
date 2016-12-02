@@ -22,5 +22,9 @@ public interface DatabaseDao {
 
 	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId,String pAvailability);
 	
-	public AppointmentModel checkAppointment(AppointmentModel appointmentModel);
+	public int checkAppointment(AppointmentModel appointmentModel);
+	
+	public String takeAppointment(AppointmentModel appointmodel);
+	
+	public String checkDoctAvailability(AppointmentModel appointmentModel);
 }

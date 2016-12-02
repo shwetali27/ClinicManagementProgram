@@ -1,7 +1,10 @@
 package com.bridgelabz.ClinicManagementProgram;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import com.bridgelabz.DataReader.JsonDataReader;
 import com.bridgelabz.dao.DatabaseDao;
@@ -9,6 +12,7 @@ import com.bridgelabz.dao.DatabaseDaoImpl;
 import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
+import com.bridgelabz.userOperations.UserOperations;
 import com.bridgelabz.utility.Utility;
 
 public class ClinicManagementProgram {
@@ -18,9 +22,10 @@ public class ClinicManagementProgram {
 		// creating the objects for class
 		Utility utility = new Utility();
 		JsonDataReader mJsonReader = new JsonDataReader();
+		UserOperations userOperations = new UserOperations();
 		DatabaseDao databaseDao = new DatabaseDaoImpl();
 		AppointmentModel appointmentModel = new AppointmentModel();
-
+		
 		// objects for lists
 		ArrayList<ClinicModel> clinicModelList = new ArrayList<ClinicModel>();
 		ArrayList<DoctorModel> doctorModelList = new ArrayList<DoctorModel>();
@@ -35,6 +40,10 @@ public class ClinicManagementProgram {
 		// getting the json file for doctors data
 		File mDoctFile = new File("JsonData.json");
 
+		// selecting the current Date
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		String date = dateFormat.format(new Date());
+		System.out.println(date);
 		// reading the file and storing the values inside list
 		mJsonReader.readData(mDoctFile);
 
@@ -49,6 +58,7 @@ public class ClinicManagementProgram {
 				clinicList.clear();
 				doctorList.clear();
 
+				appointmentModel.setDate(date);
 				System.out.println("Please Enter your Id");
 				patientId = utility.inputInteger();
 				String patientName = databaseDao.checkForPatient(patientId);
@@ -114,14 +124,10 @@ public class ClinicManagementProgram {
 					System.out.println("Wrong Choice!! Please Choose valid Doctor Id");
 					doctorId = utility.inputInteger();
 				}
+				
 				appointmentModel.setDoctorId(doctorId);
-				System.out.println(appointmentModel.getClinicId() + "," + appointmentModel.getPatientId() + ","
-						+ appointmentModel.getDoctorId()+","+appointmentModel.getSession());
+				userOperations.checkFuction(appointmentModel);
 				
-				appointmentModel = databaseDao.checkAppointment(appointmentModel);
-				
-				System.out.println(appointmentModel.getClinicId() + "," + appointmentModel.getPatientId() + ","
-						+ appointmentModel.getDoctorId()+","+appointmentModel.getSession());
 				break;
 			}
 			case 2: {
