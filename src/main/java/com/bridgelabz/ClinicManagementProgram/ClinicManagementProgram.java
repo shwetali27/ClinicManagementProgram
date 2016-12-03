@@ -54,8 +54,6 @@ public class ClinicManagementProgram {
 			System.out.println(e);
 		}
 		
-		System.out.println(date+"\n"+nextDay);
-		
 		boolean check = true;
 		while (check) {
 			System.out.println("\n\nWelcome, Please choose Your Option");
@@ -93,9 +91,11 @@ public class ClinicManagementProgram {
 				if (timeChoice == 1) {
 					availability = "Morning";
 					appointmentModel.setSession(availability);
+					userOperations.setSessionChoice(availability);
 				} else {
 					availability = "Evening";
 					appointmentModel.setSession(availability);
+					userOperations.setSessionChoice(availability);
 				}
 
 				// displaying clinics for patient

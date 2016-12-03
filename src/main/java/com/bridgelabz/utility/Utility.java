@@ -53,4 +53,13 @@ public class Utility {
 		return false;
 	}
 
+	public char inputChar() {
+		try {
+			return br.readLine().charAt(0);
+		} catch (IOException e) {
+			System.out.println("Sysout char");
+		}
+		return 0;
+		
+	}
 }
