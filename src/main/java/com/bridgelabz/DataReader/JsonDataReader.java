@@ -5,6 +5,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -14,6 +15,7 @@ import org.json.simple.parser.ParseException;
 import com.bridgelabz.dao.DatabaseDao;
 import com.bridgelabz.dao.DatabaseDaoImpl;
 import com.bridgelabz.model.ClinicModel;
+import com.bridgelabz.model.DoctorClinic;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
 
@@ -27,9 +29,10 @@ public class JsonDataReader {
 	public void readData(File file){
 		// initializing the tables inside database
 		databaseDao.createTables();
-		ArrayList<Integer> mCliniclist = new ArrayList<Integer>();
-		ArrayList<String> mAvailabilityList = new ArrayList<String>();
 
+		//objects for list variables
+		List<DoctorClinic> doctorClinicList = new ArrayList<DoctorClinic>();
+		List<Integer> mCliniclist = new ArrayList<Integer>();
 		try {
 			object = parser.parse(new FileReader(file));
 		} catch (FileNotFoundException e) {
@@ -72,28 +75,31 @@ public class JsonDataReader {
 			String name = (String) doctor.get("Name");
 			doctorModel.setDoctName(name);
 
-			int idInfo = Integer.parseInt(String.valueOf(doctor.get("DoctID")));
-			doctorModel.setDoctId(idInfo);
+			int doctorId = Integer.parseInt(String.valueOf(doctor.get("DoctID")));
+			doctorModel.setDoctId(doctorId);
 
 			String specialization = (String) doctor.get("Specialization");
 			doctorModel.setDoctSpecialization(specialization);
 
-			mAvailabilityList.clear();
-			mCliniclist.clear();
+			doctorClinicList.clear();
 			
 			JSONArray clinics = (JSONArray) doctor.get("Clinic");
 			for (int j = 0; j < clinics.size(); j++) {
+				DoctorClinic doctorClinic = new DoctorClinic();
+				doctorClinic.setDoctorId(doctorId);
 				JSONObject clinicsObject = (JSONObject) clinics.get(j);
 				int clinicId = Integer.parseInt(String.valueOf(clinicsObject.get("ClinicID")));
-				mCliniclist.add(clinicId);
+				
+				doctorClinic.setClinicId(clinicId);
 				String availability = (String) clinicsObject.get("Availability");
-				mAvailabilityList.add(availability);
-						
+				doctorClinic.setDoctAvailability(availability);
+				
+				doctorClinicList.add(doctorClinic);
 			}
-			doctorModel.setClinicIdList(mCliniclist);
-			doctorModel.setAvailabilityList(mAvailabilityList);
 			
+			doctorModel.setDoctorClinicList(doctorClinicList);
 			databaseDao.addDoctor(doctorModel);
+			
 		}
 
 		/*------------------reading the data for Patients-------------------------*/

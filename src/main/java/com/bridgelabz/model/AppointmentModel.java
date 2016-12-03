@@ -7,7 +7,7 @@ public class AppointmentModel {
 	private int clinicId;
 	private String date;
 	private String session;
-	private String doctAvailability;
+	
 	//getters and setters
 	public int getPatientId() {
 		return patientId;
@@ -38,12 +38,6 @@ public class AppointmentModel {
 	}
 	public void setSession(String session) {
 		this.session = session;
-	}
-	public String getDoctAvailability() {
-		return doctAvailability;
-	}
-	public void setDoctAvailability(String doctAvailability) {
-		this.doctAvailability = doctAvailability;
 	}
 	
 }

@@ -1,6 +1,6 @@
 package com.bridgelabz.model;
 
-import java.util.ArrayList;
+import java.util.List;
 
 public class PatientModel {
 
@@ -8,7 +8,7 @@ public class PatientModel {
 	private String patientNumber;
 	private int patientId;
 	private int patientAge;
-	private ArrayList<Integer> clinicIdList;
+	private List<Integer> clinicIdList;
 	
 	//getters and setters
 	public String getPatientName() {
@@ -35,10 +35,10 @@ public class PatientModel {
 	public void setPatientAge(int patientAge) {
 		this.patientAge = patientAge;
 	}
-	public ArrayList<Integer> getClinicIdList() {
+	public List<Integer> getClinicIdList() {
 		return clinicIdList;
 	}
-	public void setClinicIdList(ArrayList<Integer> clinicIdList) {
+	public void setClinicIdList(List<Integer> clinicIdList) {
 		this.clinicIdList = clinicIdList;
 	}
 	

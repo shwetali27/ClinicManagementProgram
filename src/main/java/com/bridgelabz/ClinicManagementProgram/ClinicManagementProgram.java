@@ -1,6 +1,7 @@
 package com.bridgelabz.ClinicManagementProgram;
 
 import java.io.File;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,7 +9,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
+import org.apache.log4j.Logger;
+
 import com.bridgelabz.DataReader.JsonDataReader;
+import com.bridgelabz.dao.DatabaseConnection;
 import com.bridgelabz.dao.DatabaseDao;
 import com.bridgelabz.dao.DatabaseDaoImpl;
 import com.bridgelabz.model.AppointmentModel;
@@ -20,6 +24,8 @@ import com.bridgelabz.utility.Utility;
 public class ClinicManagementProgram {
 
 	public static void main(String[] args) {
+		// adding log4j file for data
+		Logger logger = Logger.getLogger(ClinicManagementProgram.class);
 
 		// creating the objects for class
 		Utility utility = new Utility();
@@ -27,7 +33,8 @@ public class ClinicManagementProgram {
 		UserOperations userOperations = new UserOperations();
 		DatabaseDao databaseDao = new DatabaseDaoImpl();
 		AppointmentModel appointmentModel = new AppointmentModel();
-		
+		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+
 		// objects for lists
 		ArrayList<ClinicModel> clinicModelList = new ArrayList<ClinicModel>();
 		ArrayList<DoctorModel> doctorModelList = new ArrayList<DoctorModel>();
@@ -37,23 +44,25 @@ public class ClinicManagementProgram {
 
 		// objects for variables
 		int choice, patientId, timeChoice, clinicId, doctorId;
-		String availability,date=null,nextDay=null;
+		String availability, date = null, nextDay = null;
 
 		// getting the json file for doctors data
 		File mDoctFile = new File("JsonData.json");
 
 		// selecting the Date for appointment
-		try{
-		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-		date = dateFormat.format(new Date());
-		Calendar calender = Calendar.getInstance();
-		calender.setTime(dateFormat.parse(date));
-		calender.add(Calendar.DATE, 1);
-		nextDay = dateFormat.format(calender.getTime());
-		}catch(ParseException e){
+		try {
+			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+			date = dateFormat.format(new Date());
+			Calendar calender = Calendar.getInstance();
+			calender.setTime(dateFormat.parse(date));
+			calender.add(Calendar.DATE, 1);
+			nextDay = dateFormat.format(calender.getTime());
+		} catch (ParseException e) {
 			System.out.println(e);
 		}
-		
+
+		logger.debug(date);
+
 		boolean check = true;
 		while (check) {
 			System.out.println("\n\nWelcome, Please choose Your Option");
@@ -61,7 +70,7 @@ public class ClinicManagementProgram {
 			System.out.println("1.Read Json Data\n2.Take Appoinment \n3.Exit");
 			choice = utility.inputInteger();
 			switch (choice) {
-			case 1:{
+			case 1: {
 				// reading the file and storing the values inside list
 				mJsonReader.readData(mDoctFile);
 				break;
@@ -138,10 +147,10 @@ public class ClinicManagementProgram {
 					System.out.println("Wrong Choice!! Please Choose valid Doctor Id");
 					doctorId = utility.inputInteger();
 				}
-				
+
 				appointmentModel.setDoctorId(doctorId);
 				userOperations.checkFuction(appointmentModel);
-				
+
 				break;
 			}
 			case 3: {
@@ -157,6 +166,10 @@ public class ClinicManagementProgram {
 		} // end of while
 
 		System.out.println("Done");
-		// databaseConnection.closeConnection();
+		try {
+			databaseConnection.closeConnection();
+		} catch (SQLException e) {
+			System.out.println(e);
+		}
 	}
 }

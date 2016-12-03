@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.model.ClinicModel;
+import com.bridgelabz.model.DoctorClinic;
 import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
 import com.bridgelabz.utility.Utility;
@@ -162,7 +163,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 			System.out.println(e);
 		}
 
-		for (int i = 0; i < doctorModel.getClinicIdList().size(); i++) {
+		/*for (int i = 0; i < doctorModel.getClinicIdList().size(); i++) {
 			try {
 				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorModel.getDoctId() + ","
 						+ doctorModel.getClinicIdList().get(i) + ",'" + doctorModel.getAvailabilityList().get(i) + "')";
@@ -172,8 +173,19 @@ public class DatabaseDaoImpl implements DatabaseDao {
 			} catch (SQLException e) {
 				System.out.println(e);
 			}
-		}
+		}*/
 
+		for (DoctorClinic doctorClinic : doctorModel.getDoctorClinicList()) {
+			try {
+				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorClinic.getDoctorId() + ","
+						+ doctorClinic.getClinicId()+ ",'" + doctorClinic.getDoctAvailability() + "')";
+				stmt.executeUpdate(sql);
+			} catch (MySQLIntegrityConstraintViolationException e) {
+				System.out.println(e);
+			} catch (SQLException e) {
+				System.out.println(e);
+			}
+		}
 	}
 
 	// putting the values inside patient and patient_clinic table
