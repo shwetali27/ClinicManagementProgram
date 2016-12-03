@@ -18,23 +18,27 @@ public class UserOperations {
 
 	private String patientAvailabilityChoice;
 	
+	//setting the patients's first session choice
 	public void setSessionChoice(String patientAvailabilityChoice){
 		this.patientAvailabilityChoice = patientAvailabilityChoice; 
 	}
 	
 	public void checkFuction(AppointmentModel pAppointmentModel){
-		// objects for variables
+		
 		try {
+			// objects for variables
 			String checkAvalability;
 			char choice;
 			//System.out.println("patientAvailabilityChoice:"+patientAvailabilityChoice);
 			int valid = databaseDao.checkAppointment(pAppointmentModel);
 
+			//if that patient had already taken an appointment for session
 			if (valid == 1) {
 				System.out.println("Appointment is already taken for Date " + pAppointmentModel.getDate() + " on "
 						+ pAppointmentModel.getSession() + " Session");
 			}
 
+			//if no appointments are available for particular doctor on particular time
 			else if (valid == 2) {
 				System.out.println("No appointments available for Date " + pAppointmentModel.getDate() + " on "
 						+ pAppointmentModel.getSession() + " Session");
@@ -121,7 +125,10 @@ public class UserOperations {
 					}
 				
 				}
-			} else {
+			}
+			
+			//adding the appointment for patient
+			else {
 
 				/*System.out.println(pAppointmentModel.getClinicId() + "," + pAppointmentModel.getPatientId() + ","
 						+ pAppointmentModel.getDoctorId() + "," + pAppointmentModel.getSession() + ","
