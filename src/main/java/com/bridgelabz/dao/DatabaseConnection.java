@@ -15,13 +15,12 @@ public class DatabaseConnection {
 	private DatabaseConnection(){
 		try {
 		ComboPooledDataSource cpds = new ComboPooledDataSource();
-		cpds.setDriverClass("com.mysql.jdbc.Driver"); // loads the jdbc
-														// driver
+		cpds.setDriverClass("com.mysql.jdbc.Driver"); // loads the jdbc driver
 		cpds.setJdbcUrl("jdbc:mysql://localhost/ClinicManagement");
 		cpds.setUser("root");
 		cpds.setPassword("bridgeit");
 
-		// the settings below are optional -- c3p0 can work with defaults
+		//optional
 		cpds.setMinPoolSize(5);
 		cpds.setAcquireIncrement(5);
 		cpds.setMaxPoolSize(20);
