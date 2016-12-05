@@ -33,6 +33,7 @@ public class UserOperations {
 			// System.out.println("patientAvailabilityChoice:"+patientAvailabilityChoice);
 			int valid = databaseDao.checkAppointment(pAppointmentModel);
 
+			/*-----------------------------------------Condition one-------------------------------------------------*/
 			// if that patient had already taken an appointment for session
 			if (valid == 1) {
 				System.out.println("Appointment is already taken for Date " + pAppointmentModel.getDate() + " on "
@@ -41,6 +42,9 @@ public class UserOperations {
 
 			// if no appointments are available for particular doctor on
 			// particular time
+			
+			/*-----------------------------------------Condition two-------------------------------------------------*/
+
 			else if (valid == 2) {
 				System.out.println("No appointments available for Date " + pAppointmentModel.getDate() + " on "
 						+ pAppointmentModel.getSession() + " Session");
@@ -143,6 +147,8 @@ public class UserOperations {
 				}
 			}
 
+			/*-----------------------------------------Condition three-------------------------------------------------*/
+
 			// adding the appointment for patient
 			else {
 
@@ -151,7 +157,7 @@ public class UserOperations {
 						+ pAppointmentModel.getDate());
 
 				databaseDao.takeAppointment(pAppointmentModel);
-				System.out.println("Your appointment is done for " + pAppointmentModel.getSession() + " Session on "
+				System.out.println("Your appointment is fixed for " + pAppointmentModel.getSession() + " Session on "
 						+ pAppointmentModel.getDate());
 			}
 		} catch (ParseException e) {
