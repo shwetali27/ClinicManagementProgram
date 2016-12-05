@@ -13,7 +13,7 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.bridgelabz.dao.DatabaseDao;
-import com.bridgelabz.dao.DatabaseDaoImpl;
+import com.bridgelabz.factory.DaoFactory;
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorClinic;
 import com.bridgelabz.model.DoctorModel;
@@ -21,7 +21,9 @@ import com.bridgelabz.model.PatientModel;
 
 public class JsonDataReader {
 	// creating the object for class
-	DatabaseDao databaseDao = new DatabaseDaoImpl();
+	DaoFactory daoFactory = new DaoFactory();
+	
+	DatabaseDao databaseDao = daoFactory.getDatabaseImpl("mysql");
 	JSONParser parser = new JSONParser();
 	Object object;
 

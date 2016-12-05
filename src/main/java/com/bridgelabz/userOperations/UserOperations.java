@@ -6,14 +6,16 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
 import com.bridgelabz.dao.DatabaseDao;
-import com.bridgelabz.dao.DatabaseDaoImpl;
+import com.bridgelabz.factory.DaoFactory;
 import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.utility.Utility;
 
 public class UserOperations {
 
 	// objects for class
-	DatabaseDao databaseDao = new DatabaseDaoImpl();
+	DaoFactory daoFactory = new DaoFactory();
+	
+	DatabaseDao databaseDao = daoFactory.getDatabaseImpl("mysql");
 	Utility utility = new Utility();
 
 	private String patientAvailabilityChoice;
@@ -24,7 +26,6 @@ public class UserOperations {
 	}
 	
 	public void checkFuction(AppointmentModel pAppointmentModel){
-		
 		try {
 			// objects for variables
 			String checkAvalability;
@@ -133,7 +134,7 @@ public class UserOperations {
 				/*System.out.println(pAppointmentModel.getClinicId() + "," + pAppointmentModel.getPatientId() + ","
 						+ pAppointmentModel.getDoctorId() + "," + pAppointmentModel.getSession() + ","
 						+ pAppointmentModel.getDate());*/
-
+				
 				databaseDao.takeAppointment(pAppointmentModel);
 				System.out.println("Your appointment is done for " + pAppointmentModel.getSession() + " Session on "
 						+ pAppointmentModel.getDate());

@@ -14,7 +14,7 @@ import org.apache.log4j.Logger;
 import com.bridgelabz.DataReader.JsonDataReader;
 import com.bridgelabz.dao.DatabaseConnection;
 import com.bridgelabz.dao.DatabaseDao;
-import com.bridgelabz.dao.DatabaseDaoImpl;
+import com.bridgelabz.factory.DaoFactory;
 import com.bridgelabz.model.AppointmentModel;
 import com.bridgelabz.model.ClinicModel;
 import com.bridgelabz.model.DoctorModel;
@@ -24,16 +24,28 @@ import com.bridgelabz.utility.Utility;
 public class ClinicManagementProgram {
 
 	public static void main(String[] args) {
+		// objects for variables
+		int choice, patientId, timeChoice, clinicId, doctorId;
+		String availability, date = null, nextDay = null;
+
+		// taking current date
+		DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+		date = dateFormat.format(new Date());
+		
 		// adding log4j file for data
 		Logger logger = Logger.getLogger(ClinicManagementProgram.class);
-
+		logger.info("Date: "+date+"\n");
+		
 		// creating the objects for class
 		Utility utility = new Utility();
 		JsonDataReader mJsonReader = new JsonDataReader();
 		UserOperations userOperations = new UserOperations();
-		DatabaseDao databaseDao = new DatabaseDaoImpl();
 		AppointmentModel appointmentModel = new AppointmentModel();
 		DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
+		
+		//factory object is created for factory pattern 
+		DaoFactory daoFactory = new DaoFactory();
+		DatabaseDao databaseDao = daoFactory.getDatabaseImpl("mysql");
 
 		// objects for lists
 		ArrayList<ClinicModel> clinicModelList = new ArrayList<ClinicModel>();
@@ -42,17 +54,11 @@ public class ClinicManagementProgram {
 		ArrayList<Integer> clinicList = new ArrayList<Integer>();
 		ArrayList<Integer> doctorList = new ArrayList<Integer>();
 
-		// objects for variables
-		int choice, patientId, timeChoice, clinicId, doctorId;
-		String availability, date = null, nextDay = null;
-
 		// getting the json file for doctors data
 		File mDoctFile = new File("JsonData.json");
 
 		// selecting the Date for appointment
 		try {
-			DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-			date = dateFormat.format(new Date());
 			Calendar calender = Calendar.getInstance();
 			calender.setTime(dateFormat.parse(date));
 			calender.add(Calendar.DATE, 1);
@@ -60,8 +66,6 @@ public class ClinicManagementProgram {
 		} catch (ParseException e) {
 			System.out.println(e);
 		}
-
-		logger.debug(date);
 
 		boolean check = true;
 		while (check) {

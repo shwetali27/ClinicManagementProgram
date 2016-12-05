@@ -11,7 +11,7 @@ public class DatabaseConnection {
 	private static DatabaseConnection databaseConnection = new DatabaseConnection();
 	private Connection connection;
 
-	// Database connection to mysql
+	// Database connection to mysql using connection pull
 	private DatabaseConnection(){
 		try {
 		ComboPooledDataSource cpds = new ComboPooledDataSource();

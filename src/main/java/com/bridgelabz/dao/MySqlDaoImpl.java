@@ -14,7 +14,7 @@ import com.bridgelabz.utility.Utility;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLIntegrityConstraintViolationException;
 import com.mysql.jdbc.exceptions.jdbc4.MySQLSyntaxErrorException;
 
-public class DatabaseDaoImpl implements DatabaseDao {
+public class MySqlDaoImpl implements DatabaseDao {
 	// objects for classes
 	Utility utility = new Utility();
 	DatabaseConnection databaseConnection = DatabaseConnection.getInstance();
@@ -24,12 +24,12 @@ public class DatabaseDaoImpl implements DatabaseDao {
 	ArrayList<DoctorModel> doctorModelList = new ArrayList<DoctorModel>();
 
 	// variables
-	private Statement stmt,stmt2;
+	private Statement stmt, stmt2;
 	private String sql;
-	
+
 	// method for creating tables inside database
 	public void createTables() {
-		try{
+		try {
 			stmt = databaseConnection.getConnection().createStatement();
 		} catch (MySQLSyntaxErrorException e) {
 			System.out.println("Table Already Exists");
@@ -163,22 +163,10 @@ public class DatabaseDaoImpl implements DatabaseDao {
 			System.out.println(e);
 		}
 
-		/*for (int i = 0; i < doctorModel.getClinicIdList().size(); i++) {
-			try {
-				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorModel.getDoctId() + ","
-						+ doctorModel.getClinicIdList().get(i) + ",'" + doctorModel.getAvailabilityList().get(i) + "')";
-				stmt.executeUpdate(sql);
-			} catch (MySQLIntegrityConstraintViolationException e) {
-				System.out.println(e);
-			} catch (SQLException e) {
-				System.out.println(e);
-			}
-		}*/
-
 		for (DoctorClinic doctorClinic : doctorModel.getDoctorClinicList()) {
 			try {
-				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorClinic.getDoctorId() + ","
-						+ doctorClinic.getClinicId()+ ",'" + doctorClinic.getDoctAvailability() + "')";
+				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorClinic.getDoctorId()
+						+ "," + doctorClinic.getClinicId() + ",'" + doctorClinic.getDoctAvailability() + "')";
 				stmt.executeUpdate(sql);
 			} catch (MySQLIntegrityConstraintViolationException e) {
 				System.out.println(e);
@@ -237,7 +225,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method for taking Clinic information
 	public ArrayList<ClinicModel> takeclinicInfo(int pPatientId) {
-		ResultSet patientClinicResultSet,clinicResultSet;
+		ResultSet patientClinicResultSet, clinicResultSet;
 		clinicModelList.clear();
 		try {
 			stmt = databaseConnection.getConnection().createStatement();
@@ -298,7 +286,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 
 	// method for checking for appointment
 	public int checkAppointment(AppointmentModel appointmentModel) {
-		ResultSet resultSet,patientresultSet;
+		ResultSet resultSet, patientresultSet;
 		try {
 			int i = 0, j = 0;
 			stmt = databaseConnection.getConnection().createStatement();
@@ -308,12 +296,12 @@ public class DatabaseDaoImpl implements DatabaseDao {
 					+ appointmentModel.getDate() + "';";
 			resultSet = stmt.executeQuery(sql);
 
-			//System.out.println(sql);
+			// System.out.println(sql);
 			sql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.patientId=" + appointmentModel.getPatientId()
 					+ " AND APPOINMENTS.session='" + appointmentModel.getSession() + "' AND APPOINMENTS.date='"
 					+ appointmentModel.getDate() + "' AND APPOINMENTS.doctId=" + appointmentModel.getDoctorId() + ";";
 
-			//System.out.println(sql);
+			// System.out.println(sql);
 			patientresultSet = stmt2.executeQuery(sql);
 			while (resultSet.next()) {
 				i++;
@@ -346,7 +334,7 @@ public class DatabaseDaoImpl implements DatabaseDao {
 					+ appointmentmodel.getClinicId() + ",'" + appointmentmodel.getDate() + "','"
 					+ appointmentmodel.getSession() + "');";
 
-			//System.out.println(sql);
+			// System.out.println(sql);
 			stmt.executeUpdate(sql);
 
 		} catch (MySQLIntegrityConstraintViolationException e) {
