@@ -24,13 +24,13 @@ public class MySqlDaoImpl implements DatabaseDao {
 	ArrayList<DoctorModel> doctorModelList = new ArrayList<DoctorModel>();
 
 	// variables
-	private Statement stmt, stmt2;
-	private String sql;
+	private Statement mStmt, mStmt2;
+	private String mSql;
 
 	// method for creating tables inside database
 	public void createTables() {
 		try {
-			stmt = databaseConnection.getConnection().createStatement();
+			mStmt = databaseConnection.getConnection().createStatement();
 		} catch (MySQLSyntaxErrorException e) {
 			System.out.println("Table Already Exists");
 		} catch (SQLException e) {
@@ -45,10 +45,10 @@ public class MySqlDaoImpl implements DatabaseDao {
 	// method for creating table clinic inside database
 	private void createClinicTable() {
 		try {
-			sql = "CREATE TABLE CLINIC " + "(clinicId int NOT NULL, " + " clinicName VARCHAR(255), "
+			mSql = "CREATE TABLE CLINIC " + "(clinicId int NOT NULL, " + " clinicName VARCHAR(255), "
 					+ " PRIMARY KEY ( clinicId ))";
 
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLSyntaxErrorException e) {
 			System.out.println("Table Already Exists");
 		} catch (SQLException e) {
@@ -60,10 +60,10 @@ public class MySqlDaoImpl implements DatabaseDao {
 	// method for creating table doctor & doctor-clinic inside database
 	private void createDoctorTable() {
 		try {
-			sql = "CREATE TABLE DOCTOR " + "(doctId int NOT NULL, " + " doctName VARCHAR(255), "
+			mSql = "CREATE TABLE DOCTOR " + "(doctId int NOT NULL, " + " doctName VARCHAR(255), "
 					+ " doctSpecialization VARCHAR(255), " + " PRIMARY KEY ( doctId ))";
 
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLSyntaxErrorException e) {
 			System.out.println("Table 'DOCTOR' already Exists");
 		} catch (SQLException e) {
@@ -71,14 +71,14 @@ public class MySqlDaoImpl implements DatabaseDao {
 		}
 
 		try {
-			sql = "CREATE TABLE DOCTOR_CLINIC " + "(doctId int NOT NULL, " + " clinicId int NOT NULL ,"
+			mSql = "CREATE TABLE DOCTOR_CLINIC " + "(doctId int NOT NULL, " + " clinicId int NOT NULL ,"
 					+ "availability VARCHAR(255), " + "FOREIGN KEY (clinicId) REFERENCES CLINIC (clinicId))";
 
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLSyntaxErrorException e) {
 			try {
-				sql = "TRUNCATE TABLE DOCTOR_CLINIC";
-				stmt.executeUpdate(sql);
+				mSql = "TRUNCATE TABLE DOCTOR_CLINIC";
+				mStmt.executeUpdate(mSql);
 			} catch (SQLException e2) {
 				System.out.println(e2);
 			}
@@ -93,10 +93,10 @@ public class MySqlDaoImpl implements DatabaseDao {
 	// method for creating the patient and clinic table
 	private void createPatientTable() {
 		try {
-			sql = "CREATE TABLE PATIENT " + "(patientId int NOT NULL, " + " patientName VARCHAR(255), "
+			mSql = "CREATE TABLE PATIENT " + "(patientId int NOT NULL, " + " patientName VARCHAR(255), "
 					+ " patientNumber VARCHAR(255), " + "patientAge int ," + " PRIMARY KEY ( patientId ))";
 
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLSyntaxErrorException e) {
 			// System.out.println("Table 'PATIENT' already exists");
 		} catch (SQLException e) {
@@ -104,13 +104,13 @@ public class MySqlDaoImpl implements DatabaseDao {
 		}
 
 		try {
-			sql = "CREATE TABLE PATIENT_CLINIC " + "(patientId int NOT NULL, " + " clinicId int NOT NULL,"
+			mSql = "CREATE TABLE PATIENT_CLINIC " + "(patientId int NOT NULL, " + " clinicId int NOT NULL,"
 					+ "FOREIGN KEY (clinicId) REFERENCES CLINIC (clinicId))";
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLSyntaxErrorException e) {
 			try {
-				sql = "TRUNCATE TABLE PATIENT_CLINIC";
-				stmt.executeUpdate(sql);
+				mSql = "TRUNCATE TABLE PATIENT_CLINIC";
+				mStmt.executeUpdate(mSql);
 			} catch (SQLException e2) {
 				System.out.println(e2);
 			}
@@ -123,13 +123,13 @@ public class MySqlDaoImpl implements DatabaseDao {
 
 	private void createAppointmentsTable() {
 		try {
-			sql = "CREATE TABLE APPOINMENTS " + "(patientId int NOT NULL, " + "doctId int NOT NULL, "
+			mSql = "CREATE TABLE APPOINMENTS " + "(patientId int NOT NULL, " + "doctId int NOT NULL, "
 					+ "clinicId int NOT NULL, " + " date VARCHAR(255), " + " session VARCHAR(255), "
 					+ "FOREIGN KEY (clinicId) REFERENCES CLINIC (clinicId),"
 					+ "FOREIGN KEY (doctId) REFERENCES DOCTOR (doctId),"
 					+ "FOREIGN KEY (patientId) REFERENCES PATIENT (patientId))";
 
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLSyntaxErrorException e) {
 			System.out.println("Table Already Exists");
 		} catch (SQLException e) {
@@ -141,9 +141,9 @@ public class MySqlDaoImpl implements DatabaseDao {
 	// putting the values inside clinic
 	public void addClinic(ClinicModel clinicModel) {
 		try {
-			sql = "INSERT INTO CLINIC(clinicId,clinicName) VALUES (" + clinicModel.getClinicId() + ",'"
+			mSql = "INSERT INTO CLINIC(clinicId,clinicName) VALUES (" + clinicModel.getClinicId() + ",'"
 					+ clinicModel.getClinicName() + "')";
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			System.out.println(e);
 		} catch (SQLException e) {
@@ -154,9 +154,9 @@ public class MySqlDaoImpl implements DatabaseDao {
 	// putting value inside doctor & doctor-clinic table
 	public void addDoctor(DoctorModel doctorModel) {
 		try {
-			sql = "INSERT INTO DOCTOR(doctId,doctName,doctSpecialization) VALUES (" + doctorModel.getDoctId() + ",'"
+			mSql = "INSERT INTO DOCTOR(doctId,doctName,doctSpecialization) VALUES (" + doctorModel.getDoctId() + ",'"
 					+ doctorModel.getDoctName() + "','" + doctorModel.getDoctSpecialization() + "')";
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			System.out.println(e);
 		} catch (SQLException e) {
@@ -165,9 +165,9 @@ public class MySqlDaoImpl implements DatabaseDao {
 
 		for (DoctorClinic doctorClinic : doctorModel.getDoctorClinicList()) {
 			try {
-				sql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorClinic.getDoctorId()
+				mSql = "INSERT INTO DOCTOR_CLINIC(doctId,clinicId,availability) VALUES (" + doctorClinic.getDoctorId()
 						+ "," + doctorClinic.getClinicId() + ",'" + doctorClinic.getDoctAvailability() + "')";
-				stmt.executeUpdate(sql);
+				mStmt.executeUpdate(mSql);
 			} catch (MySQLIntegrityConstraintViolationException e) {
 				System.out.println(e);
 			} catch (SQLException e) {
@@ -179,10 +179,10 @@ public class MySqlDaoImpl implements DatabaseDao {
 	// putting the values inside patient and patient_clinic table
 	public void addPatient(PatientModel patientModel) {
 		try {
-			sql = "INSERT INTO PATIENT(patientId,patientName,patientNumber,patientAge) VALUES("
+			mSql = "INSERT INTO PATIENT(patientId,patientName,patientNumber,patientAge) VALUES("
 					+ patientModel.getPatientId() + ",'" + patientModel.getPatientName() + "','"
 					+ patientModel.getPatientNumber() + "'," + patientModel.getPatientAge() + ")";
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			System.out.println(e);
@@ -192,9 +192,9 @@ public class MySqlDaoImpl implements DatabaseDao {
 
 		for (int i = 0; i < patientModel.getClinicIdList().size(); i++) {
 			try {
-				sql = "INSERT INTO PATIENT_CLINIC(patientId,clinicId) VALUES(" + patientModel.getPatientId() + ","
+				mSql = "INSERT INTO PATIENT_CLINIC(patientId,clinicId) VALUES(" + patientModel.getPatientId() + ","
 						+ patientModel.getClinicIdList().get(i) + ")";
-				stmt.executeUpdate(sql);
+				mStmt.executeUpdate(mSql);
 
 			} catch (MySQLIntegrityConstraintViolationException e) {
 				System.out.println(e);
@@ -208,9 +208,9 @@ public class MySqlDaoImpl implements DatabaseDao {
 	public String checkForPatient(int pPatientId) {
 		ResultSet patientresultSet;
 		try {
-			stmt = databaseConnection.getConnection().createStatement();
-			sql = "SELECT PATIENT.patientName FROM PATIENT WHERE PATIENT.patientId=" + pPatientId + ";";
-			patientresultSet = stmt.executeQuery(sql);
+			mStmt = databaseConnection.getConnection().createStatement();
+			mSql = "SELECT PATIENT.patientName FROM PATIENT WHERE PATIENT.patientId=" + pPatientId + ";";
+			patientresultSet = mStmt.executeQuery(mSql);
 			if (patientresultSet.next()) {
 				return patientresultSet.getString("patientName");
 			}
@@ -228,17 +228,17 @@ public class MySqlDaoImpl implements DatabaseDao {
 		ResultSet patientClinicResultSet, clinicResultSet;
 		clinicModelList.clear();
 		try {
-			stmt = databaseConnection.getConnection().createStatement();
-			stmt2 = databaseConnection.getConnection().createStatement();
+			mStmt = databaseConnection.getConnection().createStatement();
+			mStmt2 = databaseConnection.getConnection().createStatement();
 
-			sql = "SELECT PATIENT_CLINIC.clinicId FROM PATIENT_CLINIC NATURAL JOIN PATIENT WHERE PATIENT.patientId="
+			mSql = "SELECT PATIENT_CLINIC.clinicId FROM PATIENT_CLINIC NATURAL JOIN PATIENT WHERE PATIENT.patientId="
 					+ pPatientId + ";";
-			patientClinicResultSet = stmt.executeQuery(sql);
+			patientClinicResultSet = mStmt.executeQuery(mSql);
 
 			while (patientClinicResultSet.next()) {
 
-				sql = "SELECT * FROM CLINIC WHERE CLINIC.clinicId=" + patientClinicResultSet.getInt("clinicId") + ";";
-				clinicResultSet = stmt2.executeQuery(sql);
+				mSql = "SELECT * FROM CLINIC WHERE CLINIC.clinicId=" + patientClinicResultSet.getInt("clinicId") + ";";
+				clinicResultSet = mStmt2.executeQuery(mSql);
 				if (clinicResultSet.next()) {
 					ClinicModel clinicModel = new ClinicModel();
 					clinicModel.setClinicId(clinicResultSet.getInt("clinicId"));
@@ -261,12 +261,12 @@ public class MySqlDaoImpl implements DatabaseDao {
 		ResultSet resultSet;
 		doctorModelList.clear();
 		try {
-			stmt = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM DOCTOR NATURAL JOIN DOCTOR_CLINIC WHERE DOCTOR_CLINIC.clinicId=" + pClinicId
+			mStmt = databaseConnection.getConnection().createStatement();
+			mSql = "SELECT * FROM DOCTOR NATURAL JOIN DOCTOR_CLINIC WHERE DOCTOR_CLINIC.clinicId=" + pClinicId
 					+ " and (DOCTOR_CLINIC.availability='" + pAvailability
 					+ "' or DOCTOR_CLINIC.availability='Morning-Evening');";
 
-			resultSet = stmt.executeQuery(sql);
+			resultSet = mStmt.executeQuery(mSql);
 			while (resultSet.next()) {
 				DoctorModel doctorModel = new DoctorModel();
 				doctorModel.setDoctId(resultSet.getInt("doctId"));
@@ -289,20 +289,20 @@ public class MySqlDaoImpl implements DatabaseDao {
 		ResultSet resultSet, patientresultSet;
 		try {
 			int i = 0, j = 0;
-			stmt = databaseConnection.getConnection().createStatement();
-			stmt2 = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.doctId=" + appointmentModel.getDoctorId()
+			mStmt = databaseConnection.getConnection().createStatement();
+			mStmt2 = databaseConnection.getConnection().createStatement();
+			mSql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.doctId=" + appointmentModel.getDoctorId()
 					+ " AND APPOINMENTS.session='" + appointmentModel.getSession() + "' AND APPOINMENTS.date='"
 					+ appointmentModel.getDate() + "';";
-			resultSet = stmt.executeQuery(sql);
+			resultSet = mStmt.executeQuery(mSql);
 
 			// System.out.println(sql);
-			sql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.patientId=" + appointmentModel.getPatientId()
+			mSql = "SELECT * FROM APPOINMENTS WHERE APPOINMENTS.patientId=" + appointmentModel.getPatientId()
 					+ " AND APPOINMENTS.session='" + appointmentModel.getSession() + "' AND APPOINMENTS.date='"
 					+ appointmentModel.getDate() + "' AND APPOINMENTS.doctId=" + appointmentModel.getDoctorId() + ";";
 
 			// System.out.println(sql);
-			patientresultSet = stmt2.executeQuery(sql);
+			patientresultSet = mStmt2.executeQuery(mSql);
 			while (resultSet.next()) {
 				i++;
 			}
@@ -328,14 +328,14 @@ public class MySqlDaoImpl implements DatabaseDao {
 	// method for taking appointment
 	public String takeAppointment(AppointmentModel appointmentmodel) {
 		try {
-			stmt = databaseConnection.getConnection().createStatement();
-			sql = "INSERT INTO APPOINMENTS(patientId,doctId,clinicId,date,session) VALUES("
+			mStmt = databaseConnection.getConnection().createStatement();
+			mSql = "INSERT INTO APPOINMENTS(patientId,doctId,clinicId,date,session) VALUES("
 					+ appointmentmodel.getPatientId() + "," + appointmentmodel.getDoctorId() + ","
 					+ appointmentmodel.getClinicId() + ",'" + appointmentmodel.getDate() + "','"
 					+ appointmentmodel.getSession() + "');";
 
 			// System.out.println(sql);
-			stmt.executeUpdate(sql);
+			mStmt.executeUpdate(mSql);
 
 		} catch (MySQLIntegrityConstraintViolationException e) {
 			System.out.println(e);
@@ -350,12 +350,12 @@ public class MySqlDaoImpl implements DatabaseDao {
 	public String checkDoctAvailability(AppointmentModel appointmentModel) {
 		ResultSet resultSet;
 		try {
-			stmt = databaseConnection.getConnection().createStatement();
-			sql = "SELECT * FROM DOCTOR NATURAL JOIN DOCTOR_CLINIC WHERE DOCTOR_CLINIC.doctId="
+			mStmt = databaseConnection.getConnection().createStatement();
+			mSql = "SELECT * FROM DOCTOR NATURAL JOIN DOCTOR_CLINIC WHERE DOCTOR_CLINIC.doctId="
 					+ appointmentModel.getDoctorId() + " AND DOCTOR_CLINIC.clinicId=" + appointmentModel.getClinicId()
 					+ ";";
 
-			resultSet = stmt.executeQuery(sql);
+			resultSet = mStmt.executeQuery(mSql);
 			if (resultSet.next()) {
 				return resultSet.getString("availability");
 			}

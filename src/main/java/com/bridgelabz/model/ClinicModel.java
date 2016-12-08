@@ -2,21 +2,20 @@ package com.bridgelabz.model;
 
 public class ClinicModel {
 
-	private String clinicName;
-	private Integer clinicId;
+	private String mClinicName;
+	private Integer mClinicId;
 	
 	public String getClinicName() {
-		return clinicName;
+		return mClinicName;
 	}
-	public void setClinicName(String clinicName) {
-		this.clinicName = clinicName;
+	public void setClinicName(String pClinicName) {
+		this.mClinicName = pClinicName;
 	}
 	public Integer getClinicId() {
-		return clinicId;
+		return mClinicId;
 	}
-	public void setClinicId(Integer clinicId) {
-		this.clinicId = clinicId;
+	public void setClinicId(Integer pClinicId) {
+		this.mClinicId = pClinicId;
 	}
-	
 	
 }

@@ -2,42 +2,42 @@ package com.bridgelabz.model;
 
 public class AppointmentModel {
 
-	private int patientId;
-	private int doctorId;
-	private int clinicId;
-	private String date;
-	private String session;
+	private int mPatientId;
+	private int mDoctorId;
+	private int mClinicId;
+	private String mDate;
+	private String mSession;
 	
 	//getters and setters
 	public int getPatientId() {
-		return patientId;
+		return mPatientId;
 	}
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
+	public void setPatientId(int pPatientId) {
+		mPatientId = pPatientId;
 	}
 	public int getDoctorId() {
-		return doctorId;
+		return mDoctorId;
 	}
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
+	public void setDoctorId(int pDoctorId) {
+		mDoctorId = pDoctorId;
 	}
 	public int getClinicId() {
-		return clinicId;
+		return mClinicId;
 	}
-	public void setClinicId(int clinicId) {
-		this.clinicId = clinicId;
+	public void setClinicId(int pCinicId) {
+		mClinicId = pCinicId;
 	}
 	public String getDate() {
-		return date;
+		return mDate;
 	}
-	public void setDate(String date) {
-		this.date = date;
+	public void setDate(String pDate) {
+		mDate = pDate;
 	}
 	public String getSession() {
-		return session;
+		return mSession;
 	}
-	public void setSession(String session) {
-		this.session = session;
+	public void setSession(String pSession) {
+		mSession = pSession;
 	}
 	
 }

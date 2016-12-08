@@ -8,11 +8,11 @@ import com.bridgelabz.model.DoctorModel;
 import com.bridgelabz.model.PatientModel;
 
 public interface DatabaseDao {
-	public void addClinic(ClinicModel clinicModel);
+	public void addClinic(ClinicModel pClinicModel);
 
-	public void addDoctor(DoctorModel doctorModel);
+	public void addDoctor(DoctorModel pDoctorModel);
 
-	public void addPatient(PatientModel patientModel);
+	public void addPatient(PatientModel pPatientModel);
 
 	public void createTables();
 
@@ -22,9 +22,9 @@ public interface DatabaseDao {
 
 	public ArrayList<DoctorModel> takeDoctorInfo(int pClinicId,String pAvailability);
 	
-	public int checkAppointment(AppointmentModel appointmentModel);
+	public int checkAppointment(AppointmentModel pAppointmentModel);
 	
-	public String takeAppointment(AppointmentModel appointmodel);
+	public String takeAppointment(AppointmentModel pAppointmodel);
 	
-	public String checkDoctAvailability(AppointmentModel appointmentModel);
+	public String checkDoctAvailability(AppointmentModel pAppointmentModel);
 }

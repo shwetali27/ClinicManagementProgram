@@ -4,42 +4,42 @@ import java.util.List;
 
 public class PatientModel {
 
-	private String patientName;
-	private String patientNumber;
-	private int patientId;
-	private int patientAge;
-	private List<Integer> clinicIdList;
+	private String mPatientName;
+	private String mPatientNumber;
+	private int mPatientId;
+	private int mPatientAge;
+	private List<Integer> mClinicIdList;
 	
 	//getters and setters
 	public String getPatientName() {
-		return patientName;
+		return mPatientName;
 	}
-	public void setPatientName(String patientName) {
-		this.patientName = patientName;
+	public void setPatientName(String pPatientName) {
+		this.mPatientName = pPatientName;
 	}
 	public String getPatientNumber() {
-		return patientNumber;
+		return mPatientNumber;
 	}
-	public void setPatientNumber(String patientNumber) {
-		this.patientNumber = patientNumber;
+	public void setPatientNumber(String pPatientNumber) {
+		this.mPatientNumber = pPatientNumber;
 	}
 	public int getPatientId() {
-		return patientId;
+		return mPatientId;
 	}
-	public void setPatientId(int patientId) {
-		this.patientId = patientId;
+	public void setPatientId(int pPatientId) {
+		this.mPatientId = pPatientId;
 	}
 	public int getPatientAge() {
-		return patientAge;
+		return mPatientAge;
 	}
-	public void setPatientAge(int patientAge) {
-		this.patientAge = patientAge;
+	public void setPatientAge(int pPatientAge) {
+		this.mPatientAge = pPatientAge;
 	}
 	public List<Integer> getClinicIdList() {
-		return clinicIdList;
+		return mClinicIdList;
 	}
-	public void setClinicIdList(List<Integer> clinicIdList) {
-		this.clinicIdList = clinicIdList;
+	public void setClinicIdList(List<Integer> pClinicIdList) {
+		this.mClinicIdList = pClinicIdList;
 	}
 	
 	

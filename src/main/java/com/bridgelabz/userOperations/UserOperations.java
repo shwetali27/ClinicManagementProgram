@@ -18,11 +18,11 @@ public class UserOperations {
 	DatabaseDao databaseDao = daoFactory.getDatabaseImpl("mysql");
 	Utility utility = new Utility();
 
-	private String patientAvailabilityChoice;
+	private String mPatientAvailabilityChoice;
 
 	// setting the patients's first session choice
-	public void setSessionChoice(String patientAvailabilityChoice) {
-		this.patientAvailabilityChoice = patientAvailabilityChoice;
+	public void setSessionChoice(String pPatientAvailabilityChoice) {
+		mPatientAvailabilityChoice = pPatientAvailabilityChoice;
 	}
 
 	public void checkFuction(AppointmentModel pAppointmentModel) {
@@ -40,10 +40,9 @@ public class UserOperations {
 						+ pAppointmentModel.getSession() + " Session");
 			}
 
+			/*-----------------------------------------Condition two-------------------------------------------------*/
 			// if no appointments are available for particular doctor on
 			// particular time
-			
-			/*-----------------------------------------Condition two-------------------------------------------------*/
 
 			else if (valid == 2) {
 				System.out.println("No appointments available for Date " + pAppointmentModel.getDate() + " on "
@@ -68,7 +67,7 @@ public class UserOperations {
 								b = false;
 								this.checkFuction(pAppointmentModel);
 							} else {
-								pAppointmentModel.setSession(patientAvailabilityChoice);
+								pAppointmentModel.setSession(mPatientAvailabilityChoice);
 								System.out.println("Do you want to take appointment for next day?? y/n");
 								choice = utility.inputChar();
 								if (choice == 'y') {
@@ -102,7 +101,7 @@ public class UserOperations {
 								b = false;
 								this.checkFuction(pAppointmentModel);
 							} else {
-								pAppointmentModel.setSession(patientAvailabilityChoice);
+								pAppointmentModel.setSession(mPatientAvailabilityChoice);
 								System.out.println("Do you want to take appointment for next day?? y/n");
 								choice = utility.inputChar();
 								if (choice == 'y') {
@@ -131,7 +130,7 @@ public class UserOperations {
 					choice = utility.inputChar();
 					if (choice == 'y') {
 
-						pAppointmentModel.setSession(patientAvailabilityChoice);
+						pAppointmentModel.setSession(mPatientAvailabilityChoice);
 						DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 						Calendar calender = Calendar.getInstance();
 						calender.setTime(dateFormat.parse(pAppointmentModel.getDate()));
@@ -148,13 +147,12 @@ public class UserOperations {
 			}
 
 			/*-----------------------------------------Condition three-------------------------------------------------*/
-
 			// adding the appointment for patient
 			else {
 
-				System.out.println(pAppointmentModel.getClinicId() + "," + pAppointmentModel.getPatientId() + ","
+				/*System.out.println(pAppointmentModel.getClinicId() + "," + pAppointmentModel.getPatientId() + ","
 						+ pAppointmentModel.getDoctorId() + "," + pAppointmentModel.getSession() + ","
-						+ pAppointmentModel.getDate());
+						+ pAppointmentModel.getDate());*/
 
 				databaseDao.takeAppointment(pAppointmentModel);
 				System.out.println("Your appointment is fixed for " + pAppointmentModel.getSession() + " Session on "

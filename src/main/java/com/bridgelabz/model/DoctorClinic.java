@@ -1,29 +1,29 @@
 package com.bridgelabz.model;
 
 public class DoctorClinic {
-	private int clinicId;
-	private int doctorId;
-	private String doctAvailability;
+	private int mClinicId;
+	private int mDoctorId;
+	private String mDoctAvailability;
 	
 	//getters and setters 
 	
 	public String getDoctAvailability() {
-		return doctAvailability;
+		return mDoctAvailability;
 	}
-	public void setDoctAvailability(String doctAvailability) {
-		this.doctAvailability = doctAvailability;
+	public void setDoctAvailability(String pDoctAvailability) {
+		this.mDoctAvailability = pDoctAvailability;
 	}
 	public int getClinicId() {
-		return clinicId;
+		return mClinicId;
 	}
-	public void setClinicId(int clinicId) {
-		this.clinicId = clinicId;
+	public void setClinicId(int pClinicId) {
+		this.mClinicId = pClinicId;
 	}
 	public int getDoctorId() {
-		return doctorId;
+		return mDoctorId;
 	}
-	public void setDoctorId(int doctorId) {
-		this.doctorId = doctorId;
+	public void setDoctorId(int cDoctorId) {
+		this.mDoctorId = cDoctorId;
 	}
 	
 }
